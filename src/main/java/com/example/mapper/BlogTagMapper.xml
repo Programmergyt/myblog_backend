@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.BlogTagMapper">
+
+    <insert id="insertBlogTag" parameterType="com.example.pojo.BlogTag">
+        INSERT INTO blog_tags (blog_id, tag_id) VALUES (#{blogId}, #{tagId})
+    </insert>
+    <!-- 批量插入 blog_tags -->
+    <insert id="insertBlogTags" parameterType="java.util.List">
+        INSERT INTO blog_tags (blog_id, tag_id)
+        VALUES
+        <foreach collection="list" item="blogTag" separator=",">
+            (#{blogTag.blogId}, #{blogTag.tagId})
+        </foreach>
+    </insert>
+    <!-- 删除某博客的所有标签 -->
+    <delete id="deleteBlogTagBlogId" parameterType="long">
+        DELETE FROM blog_tags
+        WHERE blog_id = #{blogId}
+    </delete>
+
+    <!-- 删除某标签的所有博客 -->
+    <delete id="deleteBlogTagByTagId" parameterType="long">
+        DELETE FROM blog_tags
+        WHERE tag_id = #{tagId}
+    </delete>
+
+    <!-- 查询某博客对应的所有标签 ID -->
+    <select id="selectTagIdsByBlogId" parameterType="long" resultType="java.lang.Long">
+        SELECT tag_id FROM blog_tags
+        WHERE blog_id = #{blogId}
+    </select>
+
+    <!-- 查询某标签关联的所有博客 ID -->
+    <select id="selectBlogIdsByTagId" parameterType="long" resultType="java.lang.Long">
+        SELECT blog_id FROM blog_tags
+        WHERE tag_id = #{tagId}
+    </select>
+
+</mapper>
