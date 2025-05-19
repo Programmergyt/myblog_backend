@@ -3,6 +3,7 @@ package com.example.service.Impl;
 import com.example.mapper.UserMapper;
 import com.example.pojo.User;
 import com.example.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Value("${avatar.upload-dir}")
-    private String uploadDir;//头像存储目录
-
 
     @Override
     public User register(User user) {
@@ -44,5 +41,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void logout() {
         // 实现登出逻辑，如清除会话等
+    }
+
+    @Override
+    public User getCurrentUser(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");  // 从拦截器中获取
+        return userMapper.selectUserById(userId);
     }
 }

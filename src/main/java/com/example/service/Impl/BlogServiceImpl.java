@@ -12,17 +12,12 @@ import com.example.pojo.Tag;
 import com.example.service.BlogService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 
 @Service
@@ -50,6 +45,7 @@ public class BlogServiceImpl implements BlogService {
         if (role == 1)
         {
             blogMapper.deleteBlogById(id);
+            blogTagMapper.deleteBlogTagBlogId(id);
         }
         else
         {
@@ -58,6 +54,7 @@ public class BlogServiceImpl implements BlogService {
             if (blog.getUserId().equals(userId))
             {
                 blogMapper.deleteBlogById(id);
+                blogTagMapper.deleteBlogTagBlogId(id);
             }
             else {
                 throw new ForbiddenException("无权限删除该博客");
@@ -86,7 +83,7 @@ public class BlogServiceImpl implements BlogService {
         List<BlogTag> blogTags = new ArrayList<>();
         for (Long tagId : blog.getTagIds()) {
             // 判断标签是否存在
-            if(tagMapper.selectTagById(blog.getUserId())==null) {throw new RuntimeException("标签不存在");}
+            if(tagMapper.selectTagById(tagId)==null) {throw new RuntimeException("标签不存在");}
             blogTags.add(new BlogTag(blogId, tagId));
         }
         if (!blogTags.isEmpty()) {

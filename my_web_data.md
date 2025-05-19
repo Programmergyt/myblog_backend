@@ -1,4 +1,4 @@
-# 建表语句
+# 建表语句 目前先制作博客模块
 ```sql
 -- 用户表
 CREATE TABLE users (

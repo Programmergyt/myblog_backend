@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+
 public class Blog {
     private Long id;
     private Long userId;

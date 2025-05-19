@@ -3,7 +3,6 @@ package com.example.service.Impl;
 import com.example.exception.ForbiddenException;
 import com.example.mapper.BlogTagMapper;
 import com.example.mapper.TagMapper;
-import com.example.pojo.Blog;
 import com.example.pojo.Tag;
 import com.example.service.TagService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +33,7 @@ public class TagServiceImpl implements TagService {
         }
         else
         {
-            throw new ForbiddenException("无权限删除博客");
+            throw new ForbiddenException("无权限删除标签");
         }
 
     }
@@ -45,8 +44,16 @@ public class TagServiceImpl implements TagService {
         // 如果是管理员则直接删除博客
         if (role == 1)
         {
-            blogTagMapper.deleteBlogTagByTagId(id);
-            tagMapper.deleteTagById(id);
+            // 标签和博客没有关联则删除标签
+            if(blogTagMapper.selectBlogIdsByTagId(id).isEmpty())
+            {
+                blogTagMapper.deleteBlogTagByTagId(id);
+                tagMapper.deleteTagById(id);
+            }
+            else
+            {
+                throw new ForbiddenException("该标签下有博客，请先删除博客");
+            }
         }
         else
         {

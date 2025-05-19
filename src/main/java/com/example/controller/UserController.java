@@ -4,6 +4,7 @@ import com.example.pojo.Result;
 import com.example.pojo.User;
 import com.example.service.UserService;
 import com.example.utils.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,5 +35,10 @@ public class UserController {
     {
         userService.logout();
         return Result.success();
+    }
+
+    @GetMapping("/me")
+    public Result<User> me(HttpServletRequest request) {
+        return Result.success(userService.getCurrentUser(request));
     }
 }

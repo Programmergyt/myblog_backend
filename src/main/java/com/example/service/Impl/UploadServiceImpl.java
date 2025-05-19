@@ -2,6 +2,7 @@ package com.example.service.Impl;
 
 import com.example.service.UploadService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,10 +18,13 @@ public class UploadServiceImpl implements UploadService{
     @Value("${blog_image.upload-dir}")
     private String uploadDir;
 
-    @Value("${blog_image.image-base-url}")
+    @Value("${blog_image.image-url}")
     private String imageBaseUrl; // 例如：http://localhost:8080/images/
 
-    public String uploadImage(MultipartFile file) throws IOException {
+    @Value("${blog_image.base-url}")
+    private String baseUrl; // 例如：http://localhost:8080/images/
+
+    public String uploadImage(MultipartFile file ,HttpServletRequest request) throws IOException {
         // 原始文件名和后缀
         String originalFilename = file.getOriginalFilename();
         assert originalFilename != null;
@@ -36,11 +40,11 @@ public class UploadServiceImpl implements UploadService{
             System.out.println("创建目录：" + dir.getAbsolutePath() + "，结果：" + output);
         }
 
-        // 保存文件到指定路径
+        // 保存文件到本地指定路径
         File dest = new File(dir, fileName);
         file.transferTo(dest);
 
-        // 返回图片访问 URL
-        return imageBaseUrl + fileName;
+        System.out.println("baseUrl: " + baseUrl);
+        return baseUrl+imageBaseUrl + fileName;  // 返回完整图片 URL
     }
 }

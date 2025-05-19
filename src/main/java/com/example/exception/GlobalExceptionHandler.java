@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Result<Void> handleException(Exception ex){
         logger.error("未处理异常", ex);
-        return Result.error(ex.getMessage()+"系统错误，请联系管理员");
+        return Result.error("其他错误："+ex.getMessage());
     }
 
     // 处理用户注册时用户名或邮箱已存在的异常
@@ -50,12 +50,12 @@ public class GlobalExceptionHandler {
 	// 处理用户没有权限（未登录或不是管理员）的异常
     @ExceptionHandler(ForbiddenException.class)
     public Result<Void> handleForbiddenException(ForbiddenException ex) {
-        return Result.error("禁止访问"+ex.getMessage());
+        return Result.error("禁止访问："+ex.getMessage());
     }
     
 	// 处理其他异常
     @ExceptionHandler(RuntimeException.class)
     public Result<Void> handleRuntimeException(RuntimeException ex) {
-        return Result.error("操作失败: " + ex.getMessage());
+        return Result.error("运行错误: " + ex.getMessage());
     }
 }
