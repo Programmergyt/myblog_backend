@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.BlogMapper">
+    <insert id="insertBlog" parameterType="com.example.pojo.Blog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO blogs (user_id, title, content, create_time, update_time)
+        VALUES (#{userId}, #{title}, #{content}, #{createTime}, #{updateTime})
+    </insert>
+
+    <select id="selectBlogById" resultType="com.example.pojo.Blog">
+        SELECT * FROM blogs WHERE id = #{id}
+    </select>
+
+    <update id="updateBlog" >
+        UPDATE blogs SET user_id = #{userId}, title = #{title}, content = #{content},
+                          update_time = #{updateTime} WHERE id = #{id}
+    </update>
+
+    <delete id="deleteBlogById">
+        DELETE FROM blogs WHERE id = #{id}
+    </delete>
+<!--    &gt;= 是 XML 转义字符，表示 >=（大于等于）；-->
+<!--    &lt;= 是 XML 转义字符，表示 <=（小于等于）。-->
+    <select id="queryBlogs" resultType="com.example.pojo.Blog">
+        SELECT DISTINCT b.*
+        FROM blogs b
+        LEFT JOIN blog_tags bt ON b.id = bt.blog_id
+        <where>
+            <if test="title != null and title != ''">
+                AND b.title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="tagId != null">
+                AND bt.tag_id = #{tagId}
+            </if>
+            <if test="userId != null">
+                AND b.user_id = #{userId}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                AND b.create_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND b.create_time &lt;= #{endTime}
+            </if>
+        </where>
+        ORDER BY b.create_time DESC
+    </select>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.TagMapper">
+
+    <!-- 插入新标签 -->
+    <insert id="insertTag" parameterType="com.example.pojo.Tag" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tags (name)
+        VALUES (#{name})
+    </insert>
+
+    <!-- 根据ID查询标签 -->
+    <select id="selectTagById" parameterType="Long" resultType="com.example.pojo.Tag">
+        SELECT id, name
+        FROM tags
+        WHERE id = #{id}
+    </select>
+
+    <!-- 获取所有标签 -->
+    <select id="getAllTags" resultType="com.example.pojo.Tag">
+        SELECT id, name
+        FROM tags
+    </select>
+
+    <select id="selectTagsByIds" parameterType="list" resultType="com.example.pojo.Tag">
+        SELECT * FROM tags
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 根据ID删除标签 -->
+    <delete id="deleteTagById" parameterType="Long">
+        DELETE FROM tags
+        WHERE id = #{id}
+    </delete>
+
+    <!-- 根据ID更新标签名称 -->
+    <update id="updateTagById" parameterType="Long">
+        UPDATE tags
+        SET name = #{name}
+        WHERE id = #{id}
+    </update>
+</mapper>

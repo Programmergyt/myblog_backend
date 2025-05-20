@@ -1,0 +1,20 @@
+# 服务器环境配置
+spring:
+  application:
+    name: myweb_backend
+  datasource:
+    url: jdbc:mysql://localhost:3306/myweb?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    username: blogadmin
+    password: Gyt2003@GYTsecure
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+blog_image:
+  upload-dir: /opt/myweb_backend_blog_imgs/
+  image-url: /images/
+  base-url: http://8.153.79.69
