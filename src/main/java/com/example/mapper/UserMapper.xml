@@ -4,20 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mapper.UserMapper">
 
-    <insert id="insertUser" parameterType="com.example.pojo.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertUser" parameterType="com.example.pojo.entity.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO users (username, password, email, avatar, role, create_time)
         VALUES (#{username}, #{password}, #{email}, #{avatar}, #{role}, #{createTime})
     </insert>
 
-    <select id="selectUserById" resultType="com.example.pojo.User">
+    <select id="selectUserById" resultType="com.example.pojo.entity.User">
         SELECT * FROM users WHERE id = #{id}
     </select>
 
-    <select id="selectUserByUsername" resultType="com.example.pojo.User">
+    <select id="selectUserByUsername" resultType="com.example.pojo.entity.User">
         SELECT * FROM users WHERE username = #{username}
     </select>
 
-    <update id="updateUser" parameterType="com.example.pojo.User">
+    <update id="updateUser" parameterType="com.example.pojo.entity.User">
         UPDATE users SET username = #{username}, password = #{password}, email = #{email},
                          avatar = #{avatar}, role = #{role} WHERE id = #{id}
     </update>
@@ -26,17 +26,22 @@
         DELETE FROM users WHERE id = #{id}
     </delete>
 
-    <select id="selectAllUsers" resultType="com.example.pojo.User">
+    <select id="selectAllUsers" resultType="com.example.pojo.entity.User">
         SELECT * FROM users
     </select>
 
     <!-- 新增：根据用户名和密码查询用户，用于登录 -->
-    <select id="selectUserByUsernameAndPassword" resultType="com.example.pojo.User">
+    <select id="selectUserByUsernameAndPassword" resultType="com.example.pojo.entity.User">
         SELECT * FROM users WHERE username = #{username} AND password = #{password}
     </select>
 
     <!-- 新增：根据邮箱查询用户，用于注册时检查邮箱是否已存在 -->
-    <select id="selectUserByEmail" resultType="com.example.pojo.User">
+    <select id="selectUserByEmail" resultType="com.example.pojo.entity.User">
         SELECT * FROM users WHERE email = #{email}
+    </select>
+
+    <!-- 获取管理员最早注册时间 -->
+    <select id="getEarliestCreateTime" resultType="java.time.LocalDateTime">
+        SELECT MIN(create_time) FROM users WHERE role = 1
     </select>
 </mapper>

@@ -1,8 +1,9 @@
 package com.example.mapper;
 
 import org.apache.ibatis.annotations.*;
-import com.example.pojo.User;
+import com.example.pojo.entity.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -32,4 +33,6 @@ public interface UserMapper {
 
     // 根据邮箱查询用户
     User selectUserByEmail(@Param("email") String email);
+
+    LocalDateTime getEarliestCreateTime();  // 最早注册时间（管理员）
 }

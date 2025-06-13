@@ -19,10 +19,10 @@ public class UploadServiceImpl implements UploadService{
     private String uploadDir;
 
     @Value("${blog_image.image-url}")
-    private String imageBaseUrl; // 例如：http://localhost:8080/images/
+    private String imageBaseUrl;
 
     @Value("${blog_image.base-url}")
-    private String baseUrl; // 例如：http://localhost:8080/images/
+    private String baseUrl;
 
     public String uploadImage(MultipartFile file ,HttpServletRequest request) throws IOException {
         // 原始文件名和后缀

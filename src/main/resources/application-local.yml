@@ -1,0 +1,17 @@
+# src/main/resources/application-local.yml
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/myweb_backend # 数据库连接URL
+    username: root # 数据库用户名
+    password: 1234 # 数据库密码
+
+blog_image:
+  upload-dir: D:/develop/myweb_backend_blog_imgs # 图片上传物理路径 (统一路径斜杠)
+  base-url: http://localhost:8080 # 图片访问前缀URL
+
+logging:
+  level:
+    com.example: debug # com.example包的日志级别
+  file:
+    name: D:/develop/app.log # 日志文件路径 (统一路径斜杠)

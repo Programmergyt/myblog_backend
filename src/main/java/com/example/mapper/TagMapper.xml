@@ -5,25 +5,25 @@
 <mapper namespace="com.example.mapper.TagMapper">
 
     <!-- 插入新标签 -->
-    <insert id="insertTag" parameterType="com.example.pojo.Tag" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertTag" parameterType="com.example.pojo.entity.Tag" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tags (name)
         VALUES (#{name})
     </insert>
 
     <!-- 根据ID查询标签 -->
-    <select id="selectTagById" parameterType="Long" resultType="com.example.pojo.Tag">
+    <select id="selectTagById" parameterType="Long" resultType="com.example.pojo.entity.Tag">
         SELECT id, name
         FROM tags
         WHERE id = #{id}
     </select>
 
     <!-- 获取所有标签 -->
-    <select id="getAllTags" resultType="com.example.pojo.Tag">
+    <select id="getAllTags" resultType="com.example.pojo.entity.Tag">
         SELECT id, name
         FROM tags
     </select>
 
-    <select id="selectTagsByIds" parameterType="list" resultType="com.example.pojo.Tag">
+    <select id="selectTagsByIds" parameterType="list" resultType="com.example.pojo.entity.Tag">
         SELECT * FROM tags
         WHERE id IN
         <foreach collection="ids" item="id" open="(" separator="," close=")">

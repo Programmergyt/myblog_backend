@@ -1,32 +1,40 @@
+# 第二次部署的改进
+## 期望的改动
 
-一共四个模块：博客模块、做饭模块、追番模块、工具模块、登录注册模块
+rabbitmq+redis
+按博客标题名搜索功能
+网站备案、域名申请
+博客分页功能
+评论区
+采用 RABC 权限模型，使用 SpringSecurity 进行权限管理
+前后端分离，docker compose一键部署
 
-GET 用于获取资源或资源集合的详细信息，可以通过 URL 路径或查询参数来传递条件。使用RequestParam
-POST 用于创建新资源，通常通过 @RequestBody 获取请求体中的数据，并返回新创建的资源
-PUT @RequestBody 来接收更新的资源数据，并根据资源 ID 更新相应的记录
-DELETE 通过 URL 中的路径参数传递要删除的资源 ID
+怎么统计totalViews？如下调整数据库
+```sql
+ALTER TABLE blogs ADD COLUMN view_count INT DEFAULT 0;
 
-上传博客的过程是，前端先上传图片，后端返回图片URL，前端把URL插入markdown，然后再把markdown发给后端
+SELECT SUM(view_count) FROM blogs;
+```
 
-前端需要知道后端什么内容？【controller、POJO】、【interceptor】、【exceptionHandler】、【webconfig】
-前端需要和后端对接的模块：mock,axios,api
+怎么统计uniqueVisitors？如下调整数据库
+```sql
+CREATE TABLE visitor_logs (
+id BIGINT PRIMARY KEY AUTO_INCREMENT,
+ip_address VARCHAR(50),
+user_agent TEXT,
+visit_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-后端还需要添加的接口：
-* 用户信息接口（输入token）
-* 网站统计数据接口
+SELECT COUNT(DISTINCT ip_address) FROM visitor_logs;
+```
 
-| 操作类型     | 正确的返回类型 | 含义            |
-|----------|---------|---------------|
-| `insert` | `int`   | 插入了多少行（通常是 1） |
-| `update` | `int`   | 更新了多少行（可以是 0） |
-| `delete` | `int`   | 删除了多少行（可以是 0） |
-| `select` | `pojo`  | 实体类           |
+## 已经做了的改动
 
-| 比较项       | 同步 vs 串行                              | 异步 vs 并行                            |
-| --------- | ------------------------------------- | ----------------------------------- |
-| ✅ **共同点** | 都是“按顺序执行”的体现（一个完成了才开始下一个）             | 都可以让程序“同时处理多个事情”                    |
-| ❌ **不同点** | **同步**关注“是否等待任务完成”，**串行**关注“任务是否同时进行” | **异步**是“能继续做别的”，**并行**是“真的多个任务同时运行” |
-| 举例        | 同步串行就是逐步做事（如流水线），同步并行少见               | 异步串行是常见的 JS 模式，异步并行则是 Promise.all   |
+前端使用pinia重构所有与登录、认证、登出、用户信息的内容
+
+后端增加站点信息统计功能（已支持totalPosts、totalWords、uptimeSeconds）
+删除博客时一并删除对应图片
+加入日志系统，每次执行接口都进行一个记录
 
 
 # 模块与功能设计
@@ -280,7 +288,7 @@ private String name;
 - `GET /api/blogs` ✅
   - 查询博客列表，支持标题/标签/用户/时间筛选
     public Result<List<Blog>> getBlogs(@RequestParam(required = false) String title,
-    @RequestParam(required = false) Long tagId,
+    @RequestParam(required = false) List<Long> tagIds,
     @RequestParam(required = false) Long userId,
     @RequestParam(required = false) String startTime,
     @RequestParam(required = false) String endTime) {
@@ -306,8 +314,8 @@ private String name;
 - `POST /api/tags` （需要登录为管理员）✅
   - 新增tag
     public Result<Tag> createTag(@RequestBody Tag tag, HttpServletRequest request) {
-    Tag created_tag = tagService.createTag(tag.getName(),request);
-    return Result.success(created_tag);
+    Tag created_Article_tag = tagService.createTag(tag.getName(),request);
+    return Result.success(created_Article_tag);
     }
 - `DELETE /api/tags/{id}` （需要登录为管理员）✅
   - 删除tag

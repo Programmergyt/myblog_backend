@@ -1,6 +1,6 @@
 package com.example.interceptor;
 
-import com.example.pojo.Result;
+import com.example.pojo.entity.Result;
 import com.example.utils.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request,  HttpServletResponse response, Object handler) throws Exception {
 
         //由于URL重复，特在此放行一部分接口
         String method = request.getMethod();

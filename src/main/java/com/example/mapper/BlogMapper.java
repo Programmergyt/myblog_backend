@@ -1,6 +1,6 @@
 package com.example.mapper;
 
-import com.example.pojo.Blog;
+import com.example.pojo.entity.Blog;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,8 +23,15 @@ public interface BlogMapper {
 
     // 根据条件查询博客
     List<Blog> queryBlogs(@Param("title") String title,
-                          @Param("tagId") Long tagId,
+                          @Param("tagIds") List<Long> tagIds,
+                          @Param("tagCount") Integer tagCount,
                           @Param("userId") Long userId,
                           @Param("startTime") String startTime,
                           @Param("endTime") String endTime);
+
+    // 博客总数
+    int countTotalPosts();
+
+    // 博客总字数
+    int countTotalWords();
 }

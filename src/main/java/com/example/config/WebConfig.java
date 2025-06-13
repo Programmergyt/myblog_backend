@@ -1,16 +1,19 @@
 package com.example.config;
 
 import com.example.interceptor.LoginCheckInterceptor;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@PropertySource("classpath:application_local.yml")
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
@@ -25,16 +28,32 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/api/**")
                 .excludePathPatterns("/api/auth/login", "/api/auth/register",  "/api/stats", "/api/upload");
     }
-//    请求路径：http://localhost:8080/images/xxx.jpg
-//    实际物理路径：D:/develop/myweb_backend_blog_imgs/xxx.jpg
-//    所以前端只要发个图片过来，我存到d盘，把image开头的路径发给他，他访问image开头的路径就会映射到我的d盘
-//    addResourceLocations(...) 方法要求的路径是 Spring 能识别的资源定位符
-//    "file:" 是 协议前缀，告诉 Spring：你要加载的是本地磁盘文件
-//    '/'是目录分隔符，确保路径拼接不会出错
-//    ResourceHandler 是目录映射
+
+    // 资源目录映射
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("file:" + uploadPath + "/");
+    }
+
+    // knife4j 配置
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("API文档")
+                        .version("1.0")
+                        .description("基于SpringBoot3 + Vue3开发的博客项目")
+                        .contact(new Contact().name("gyt").url("http://8.153.79.69").email("2403508140@qq.com"))
+                );
+    }
+
+    // 修改knife4j分组名称、分组地址
+    @Bean
+    public GroupedOpenApi apiGroup() {
+        return GroupedOpenApi.builder()
+                .group("api")                     // 分组名称，可自定义
+                .pathsToMatch("/api/**")          // 匹配所有 /api/ 开头的接口
+                .build();
     }
 }

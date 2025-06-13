@@ -1,6 +1,6 @@
 package com.example.mapper;
 
-import com.example.pojo.Tag;
+import com.example.pojo.entity.Tag;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -1,11 +1,10 @@
 package com.example.service.Impl;
 
 import com.example.mapper.UserMapper;
-import com.example.pojo.User;
+import com.example.pojo.entity.User;
 import com.example.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

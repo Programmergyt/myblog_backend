@@ -1,6 +1,6 @@
 package com.example.controller;
 
-import com.example.pojo.Result;
+import com.example.pojo.entity.Result;
 import com.example.service.UploadService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@io.swagger.v3.oas.annotations.tags.Tag(name = "文件上传接口")
 @RequestMapping("/api/upload")
 public class UploadController {
     @Autowired

@@ -3,7 +3,7 @@ package com.example.service.Impl;
 import com.example.exception.ForbiddenException;
 import com.example.mapper.BlogTagMapper;
 import com.example.mapper.TagMapper;
-import com.example.pojo.Tag;
+import com.example.pojo.entity.Tag;
 import com.example.service.TagService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +60,8 @@ public class TagServiceImpl implements TagService {
             throw new ForbiddenException("普通用户无权限删除标签");
         }
     }
+
+
 
     @Override
     public List<Tag> getAllTags() {

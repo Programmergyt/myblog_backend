@@ -3,12 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mapper.BlogMapper">
-    <insert id="insertBlog" parameterType="com.example.pojo.Blog" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertBlog" parameterType="com.example.pojo.entity.Blog" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO blogs (user_id, title, content, create_time, update_time)
         VALUES (#{userId}, #{title}, #{content}, #{createTime}, #{updateTime})
     </insert>
 
-    <select id="selectBlogById" resultType="com.example.pojo.Blog">
+    <select id="selectBlogById" resultType="com.example.pojo.entity.Blog">
         SELECT * FROM blogs WHERE id = #{id}
     </select>
 
@@ -22,16 +22,25 @@
     </delete>
 <!--    &gt;= 是 XML 转义字符，表示 >=（大于等于）；-->
 <!--    &lt;= 是 XML 转义字符，表示 <=（小于等于）。-->
-    <select id="queryBlogs" resultType="com.example.pojo.Blog">
-        SELECT DISTINCT b.*
+    <select id="queryBlogs" resultType="com.example.pojo.entity.Blog">
+        SELECT b.*
         FROM blogs b
-        LEFT JOIN blog_tags bt ON b.id = bt.blog_id
         <where>
+            <if test="tagIds != null and tagIds.size() > 0">
+                AND b.id IN (
+                SELECT bt.blog_id
+                FROM blog_tags bt
+                WHERE bt.tag_id IN
+                <foreach item="itemTagId" collection="tagIds" open="(" separator="," close=")">
+                    #{itemTagId}
+                </foreach>
+                GROUP BY bt.blog_id
+                HAVING COUNT(DISTINCT bt.tag_id) = #{tagCount}
+                )
+            </if>
+
             <if test="title != null and title != ''">
                 AND b.title LIKE CONCAT('%', #{title}, '%')
-            </if>
-            <if test="tagId != null">
-                AND bt.tag_id = #{tagId}
             </if>
             <if test="userId != null">
                 AND b.user_id = #{userId}
@@ -44,5 +53,14 @@
             </if>
         </where>
         ORDER BY b.create_time DESC
+    </select>
+    <!-- 统计博客总数 -->
+    <select id="countTotalPosts" resultType="int">
+        SELECT COUNT(*) FROM blogs
+    </select>
+
+    <!-- 统计博客总字数 -->
+    <select id="countTotalWords" resultType="int">
+        SELECT SUM(CHAR_LENGTH(content)) FROM blogs
     </select>
 </mapper>
