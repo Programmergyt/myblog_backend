@@ -1,17 +1,15 @@
 package com.example.service;
 
-import com.example.pojo.entity.Tag;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.pojo.vo.TagVO;
 import java.util.List;
-
 
 public interface TagService {
     // 添加新标签
-    Tag createTag(String name, HttpServletRequest request);
+    TagVO createTag(String name);
 
     // 根据 ID 删除标签（如果没有被使用）
-    void deleteTag(Long id, HttpServletRequest request);
+    void deleteTag(Long id);
 
     // 查询所有标签（用于博客发布时选择）
-    List<Tag> getAllTags();
+    List<TagVO> getAllTags();
 }

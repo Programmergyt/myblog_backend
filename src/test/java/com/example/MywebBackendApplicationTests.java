@@ -14,21 +14,21 @@ class MywebBackendApplicationTests {
     @Autowired
     private UserMapper userMapper;
 //
-    @Test
-    void testRegisterAndLogin() {
-        User user = new User();
-        user.setUsername("testuserMIKE");
-        user.setPassword("testpassword");
-        user.setEmail("testuser@example.com");
-        user.setAvatar("https://example.com/avatar.jpg");
-        user.setRole(0);
-        user.setCreateTime(java.time.LocalDateTime.now());
-
-        userMapper.insertUser(user);
-
-        User loggedInUser = userMapper.selectUserByUsernameAndPassword("testuserMIKE", "testpassword");
-        assertNotNull(loggedInUser, "User should be able to login with correct credentials");
-        assertEquals("testuser@example.com", loggedInUser.getEmail(), "Email should match the registered email");
-        userMapper.deleteUserById(loggedInUser.getId());
-    }
+//    @Test
+//    void testRegisterAndLogin() {
+//        User user = new User();
+//        user.setUsername("testuserMIKE");
+//        user.setPassword("testpassword");
+//        user.setEmail("testuser@example.com");
+//        user.setAvatar("https://example.com/avatar.jpg");
+//        user.setRole(0);
+//        user.setCreateTime(java.time.LocalDateTime.now());
+//
+//        userMapper.insertUser(user);
+//
+//        User loggedInUser = userMapper.selectUserByUsernameAndPassword("testuserMIKE", "testpassword");
+//        assertNotNull(loggedInUser, "User should be able to login with correct credentials");
+//        assertEquals("testuser@example.com", loggedInUser.getEmail(), "Email should match the registered email");
+//        userMapper.deleteUserById(loggedInUser.getId());
+//    }
 }

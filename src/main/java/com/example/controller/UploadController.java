@@ -2,7 +2,6 @@ package com.example.controller;
 
 import com.example.pojo.entity.Result;
 import com.example.service.UploadService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,17 +15,16 @@ import java.util.Map;
 
 @RestController
 @io.swagger.v3.oas.annotations.tags.Tag(name = "文件上传接口")
-@RequestMapping("/api/upload")
+@RequestMapping("/api")
 public class UploadController {
     @Autowired
     private UploadService uploadService;
-    @PostMapping
-    public Result<Map<String, Object>> upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
-        String url = uploadService.uploadImage(file ,request);
-        // 返回图片链接（可按前端编辑器要求定制格式）
-        Map<String, Object> result = new HashMap<>();
-        result.put("url", url);
-        result.put("success", 1); // Editor.md 等编辑器需要
-        return Result.success(result);
+
+    @PostMapping("/upload")
+    public Result<Map<String, Object>> upload(@RequestParam("file") MultipartFile file) throws IOException {
+        String url = uploadService.uploadImage(file);
+        Map<String, Object> data = new HashMap<>();
+        data.put("url", url);
+        return Result.success(data);
     }
 }

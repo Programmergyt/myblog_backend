@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import com.example.pojo.entity.Result;
-import com.example.pojo.entity.Stats;
+import com.example.pojo.vo.StatsVO;
 import com.example.service.StatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +18,9 @@ public class StatsController {
     private StatsService statsService;
 
     @GetMapping
-    // statsVO:与stats一致
-    public Result<Stats> getStats() {
-        Stats stats = statsService.getStats();
-        return Result.success(stats);
+    public Result<StatsVO> getStats() {
+        StatsVO statsVO = statsService.getStats();
+        return Result.success(statsVO);
     }
 }
 

@@ -371,3 +371,15 @@ private String name;
   - 查询文件夹一级目录占用大小
 - `GET /api/tools/folder/structure`
   - 打印一级、二级、三级目录结构
+
+我的ubuntu服务器中已经安装了mysql、redis并完成了部署(没有使用docker)。
+我的前端打包文件夹在/opt/myweb_frontend(这个文件夹就是vue打包后的dist文件夹改了个名，
+里面已经有assets和index.html)，且已经完成了部署
+（nginx配置文件是目前电脑上的D:\JAVA_Projects\myweb_backend\myweb_frontend.conf，但是没有使用docker）。
+后端项目我就是我现在打开的项目（使用application.yml和application-server.yml进行了配置与部署，同样没有使用docker）。
+结合我的配置文件，告诉我如何用docker部署前端和后端项目（新建/opt/docker_deployment），
+我已经下载了docker和docker compose(root@iZuf60a5mbwtciehhwzdpgZ:~# docker --version
+Docker version 28.1.1, build 4eba377
+root@iZuf60a5mbwtciehhwzdpgZ:~# docker compose version
+Docker Compose version v2.35.1
+)

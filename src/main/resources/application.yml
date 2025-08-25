@@ -3,27 +3,45 @@
 spring:
   # 通过修改这里的 active 值来切换环境配置 (例如: local, server)
   profiles:
-    active: local # 默认激活本地环境，你可以根据需要修改为 server
-
+    active: docker # 默认激活本地环境，你可以根据需要修改为 server
   application:
     name: myweb_backend # 应用名称
   servlet:
     multipart:
-      max-file-size: 5MB # 最大文件大小
-      max-request-size: 5MB # 最大请求大小
+      max-file-size: ${spring.servlet.multipart.max-file-size}
+      max-request-size: ${spring.servlet.multipart.max-request-size}
+  datasource:
+    url: ${spring.datasource.url}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+  data:
+    redis:
+      host: ${spring.data.redis.host}
+      port: 6379
+      database: 0
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600s #  3600 秒
 
 mybatis:
   configuration:
-    map-underscore-to-camel-case: true # 开启驼峰命名转换
-    # log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 通用的 MyBatis 日志实现可以在这里定义，或者在特定profile中定义
+    map-underscore-to-camel-case: true
+    log-impl: ${mybatis.configuration.log-impl}
+  mapper-locations: classpath:com/example/mapper/*.xml
 
 blog_image:
-  image-url: /images/ # 图片访问的基础URL (保持一致且更简洁)
+  upload-dir: ${blog_image.upload-dir}
+  image-url: ${blog_image.image-url}
+  base-url: ${blog_image.base-url}
 
 # 通用的日志格式和默认的根日志级别
 logging:
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n" # 控制台日志格式
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n" # 文件日志格式
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   level:
-    root: info # 根日志级别
+    root: ${logging.level.root}
+    com.example: ${logging.level.com.example}
+  file:
+    name: ${logging.file.name}

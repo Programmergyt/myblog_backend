@@ -5,13 +5,28 @@ spring:
     url: jdbc:mysql://localhost:3306/myweb_backend # 数据库连接URL
     username: root # 数据库用户名
     password: 1234 # 数据库密码
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      database: 0
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 blog_image:
   upload-dir: D:/develop/myweb_backend_blog_imgs # 图片上传物理路径 (统一路径斜杠)
+  image-url: /images/
   base-url: http://localhost:8080 # 图片访问前缀URL
 
 logging:
   level:
+    root: info
     com.example: debug # com.example包的日志级别
   file:
     name: D:/develop/app.log # 日志文件路径 (统一路径斜杠)

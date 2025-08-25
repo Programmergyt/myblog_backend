@@ -1,9 +1,9 @@
 package com.example.controller;
 
-import com.example.pojo.entity.Tag;
+import com.example.pojo.dto.TagDTO;
 import com.example.pojo.entity.Result;
+import com.example.pojo.vo.TagVO;
 import com.example.service.TagService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,23 +17,18 @@ public class TagController {
     private TagService tagService;
 
     @GetMapping
-    public Result<List<Tag>> getAllTags() {
-        List<Tag> tags = tagService.getAllTags();
-        return Result.success(tags);
+    public Result<List<TagVO>> getAllTags() {
+        return Result.success(tagService.getAllTags());
     }
 
     @DeleteMapping("/{id}")
-    public Result<Void> deleteTag(@PathVariable Long id, HttpServletRequest request) {
-        tagService.deleteTag(id,request);
+    public Result<Void> deleteTag(@PathVariable Long id) {
+        tagService.deleteTag(id);
         return Result.success();
     }
 
-    // TagDTO: name
-    // TagVO: 与tag一致
     @PostMapping
-    public Result<Tag> createTag(@RequestBody Tag tag, HttpServletRequest request) {
-        Tag created_Article_tag = tagService.createTag(tag.getName(),request);
-        return Result.success(created_Article_tag);
+    public Result<TagVO> createTag(@RequestBody TagDTO tagDTO) {
+        return Result.success(tagService.createTag(tagDTO.getName()));
     }
-
 }

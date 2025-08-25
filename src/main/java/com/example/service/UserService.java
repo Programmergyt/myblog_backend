@@ -1,11 +1,12 @@
 package com.example.service;
 
-import com.example.pojo.entity.User;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.pojo.dto.LoginDTO;
+import com.example.pojo.dto.RegisterDTO;
+import com.example.pojo.vo.UserVO;
 
 public interface UserService {
-    User register(User user);
-    User login(User user);
+    UserVO register(RegisterDTO registerDTO);
+    String login(LoginDTO loginDTO);
     void logout();
-    User getCurrentUser(HttpServletRequest request);
+    UserVO getCurrentUser();
 }

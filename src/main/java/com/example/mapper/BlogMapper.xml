@@ -26,7 +26,7 @@
         SELECT b.*
         FROM blogs b
         <where>
-            <if test="tagIds != null and tagIds.size() > 0">
+            <if test="tagCount > 0">
                 AND b.id IN (
                 SELECT bt.blog_id
                 FROM blog_tags bt

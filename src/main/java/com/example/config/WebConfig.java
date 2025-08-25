@@ -1,39 +1,33 @@
 package com.example.config;
 
-import com.example.interceptor.LoginCheckInterceptor;
 import org.springdoc.core.models.GroupedOpenApi;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private LoginCheckInterceptor loginCheckInterceptor;
+    private static final Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
     @Value("${blog_image.upload-dir}")
     private String uploadPath;
-    //登录认证放拦截器，业务权限验证放 Service 层
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginCheckInterceptor)
-                .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/auth/login", "/api/auth/register",  "/api/stats", "/api/upload");
-    }
 
     // 资源目录映射
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String location = "file:" + uploadPath+'/';
+        logger.info("配置静态资源映射: /images/** -> {}", location);
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:" + uploadPath + "/");
+                .addResourceLocations(location);
+
     }
 
     // knife4j 配置
