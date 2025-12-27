@@ -16,7 +16,7 @@
 * **全局异常处理**: 统一处理业务异常与运行时异常 (`GlobalExceptionHandler`)。
 * **多环境配置**: 支持 Local、Docker部署、Server裸机部署多环境切换。
 
-## 🛠️ 技术栈
+## 技术栈
 
 * **开发语言**: Java
 * **核心框架**: Spring Boot
